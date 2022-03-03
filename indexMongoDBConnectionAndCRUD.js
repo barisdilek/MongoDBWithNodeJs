@@ -69,25 +69,49 @@ const findDocuments = function(db, id, callback) {
     //.toArray(function(err, docs) {callback(docs);});
 };
 
-// Create MongoDB Client 
-const MongoClient = require('mongodb').MongoClient; 
 
-// MongoDB server address 
-const mongoDbServer = 'mongodb://127.0.0.1:27017';
 
-// Database name
+// // Create MongoDB Client 
+// const MongoClient = require('mongodb').MongoClient; 
+
+// // MongoDB server address 
+// const mongoDbServer = 'mongodb://127.0.0.1:27017';
+
+//Database name
 const dbName = 'FirstDatabase';
 
-// Connection to server 
-MongoClient.connect(mongoDbServer, function(err, client) {
-    if(err) throw err;
-    const db = client.db(dbName);
+// // Connection to server 
+// MongoClient.connect(mongoDbServer, function(err, client) {
+//     if(err) throw err;
+//     const db = client.db(dbName);
 
-    console.log("Connection to mongoDB successfully established."); 
+//     console.log("Connection to mongoDB successfully established."); 
 
-    //client.close();
+//     //client.close();
 
-    insertDocuments(db, function() {
+//     insertDocuments(db, function() {
+// 		updateDocument(db,1,23, function() {
+// 			deleteDocument(db,3, function() {
+// 				findDocuments(db,2, function() {
+// 					client.close();
+// 				});
+// 			});
+// 		});
+// 	});
+
+// });
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+
+	if(err) throw err;
+	const db = client.db(dbName);
+
+	console.log("Connection to mongoDB successfully established."); 
+  	
+	insertDocuments(db, function() {
 		updateDocument(db,1,23, function() {
 			deleteDocument(db,3, function() {
 				findDocuments(db,2, function() {
@@ -97,4 +121,7 @@ MongoClient.connect(mongoDbServer, function(err, client) {
 		});
 	});
 
+	//const collection = client.db("test").collection("devices");
+  	//// perform actions on the collection object
+  	//client.close();
 });
